@@ -1,0 +1,7 @@
+gradio
+requests
+openai
+smolagents
+pandas
+openpyxl
+youtube-transcript-api
