@@ -1,4 +1,5 @@
 import os
+import re
 import gradio as gr
 import requests
 import inspect
@@ -21,7 +22,19 @@ class BasicAgent:
         print("BasicAgent initialized.")
     def __call__(self, question: str) -> str:
         print(f"Agent received question (first 50 chars): {question[:50]}...")
-        fixed_answer = "This is a default answer."
+        # very naive arithmetic handling as an example
+        match = re.findall(r"[0-9\.\+\-\*/\(\) ]+", question)
+        if match:
+            expr = "".join(match)
+            try:
+                result = eval(expr)
+                answer = str(result)
+                print(f"Computed math result: {answer}")
+                return answer
+            except Exception as e:
+                print(f"Math evaluation failed: {e}")
+
+        fixed_answer = "I don't know."
         print(f"Agent returning fixed answer: {fixed_answer}")
         return fixed_answer
 

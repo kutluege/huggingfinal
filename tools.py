@@ -38,12 +38,16 @@ ddg_search.description = (
 )
 
 # -----------------------------------------------------------------------
-# 3) Google Search — alternative search engine fallback
+# 3) Google Search — alternative search engine fallback (optional)
 # -----------------------------------------------------------------------
-google_search = GoogleSearchTool()
-google_search.description = (
-    "Useful as a secondary search source for up-to-date factual queries."
-)
+try:
+    google_search = GoogleSearchTool()
+    google_search.description = (
+        "Useful as a secondary search source for up-to-date factual queries."
+    )
+except Exception as e:  # missing API key or package
+    google_search = None
+    print(f"GoogleSearchTool disabled: {e}")
 
 # -----------------------------------------------------------------------
 # 4) Visit Webpage — scrape page text or HTML sections
@@ -55,13 +59,17 @@ visit_webpage.description = (
 )
 
 # -----------------------------------------------------------------------
-# 5) SpeechToText — short audio transcription
+# 5) SpeechToText — short audio transcription (optional)
 # -----------------------------------------------------------------------
-speech_to_text = SpeechToTextTool()
-speech_to_text.description = (
-    "Converts a short audio snippet (MP3/WAV) to text. "
-    "Useful for very brief voice notes or clips."
-)
+try:
+    speech_to_text = SpeechToTextTool()
+    speech_to_text.description = (
+        "Converts a short audio snippet (MP3/WAV) to text. "
+        "Useful for very brief voice notes or clips."
+    )
+except Exception as e:
+    speech_to_text = None
+    print(f"SpeechToTextTool disabled: {e}")
 
 # -----------------------------------------------------------------------
 # 6) YouTube Transcript — custom tool for full video captions
@@ -169,9 +177,15 @@ completion_tool.description = (
 TOOLS = [
     python_exec_tool,
     ddg_search,
-    google_search,
+]
+if google_search is not None:
+    TOOLS.append(google_search)
+TOOLS += [
     visit_webpage,
-    speech_to_text,
+]
+if speech_to_text is not None:
+    TOOLS.append(speech_to_text)
+TOOLS += [
     youtube_transcript_tool,
     whisper_tool,
     file_tool,

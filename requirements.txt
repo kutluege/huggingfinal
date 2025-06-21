@@ -5,3 +5,4 @@ smolagents
 pandas
 openpyxl
 youtube-transcript-api
+duckduckgo-search
